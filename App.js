@@ -1,21 +1,66 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+
+
+import Currency from './pages/Currency';
+import Home from './pages/Home';
+import Weather from './pages/Weather';
+
 
 export default function App() {
+
+  const Tab = createBottomTabNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <NavigationContainer>
+        <Tab.Navigator
+          initialRouteName="Home"
+          tabBarOptions={{
+            activeTintColor: '#e91e63',
+            labelPosition: 'below-icon'
+          }}
+
+        >
+          <Tab.Screen
+            name="Currency"
+            component={Currency}
+            options={{
+              tabBarLabel: 'Currency',
+              tabBarIcon: () => (
+                <MaterialCommunityIcons name="currency-usd" size={24} color="black" />
+              ),
+            }} />
+
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarLabel: 'Home',
+              tabBarIcon: () => (
+                <Ionicons name="ios-home" size={24} color="black" />
+              ),
+            }} />
+
+          <Tab.Screen
+            name="Weather"
+            component={Weather}
+            options={{
+              tabBarLabel: 'Weather',
+              tabBarIcon: () => (
+                <MaterialCommunityIcons name="weather-partly-cloudy" size={24} color="black" />
+              ),
+            }} />
+
+        </Tab.Navigator>
+
+      </NavigationContainer>
+    </>
+
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
