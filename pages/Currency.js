@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, TextInput, Button } from 'react-native';
 import logoImg from '../assets/logo.jpg';
 import { AntDesign } from '@expo/vector-icons';
+import { CLkey } from './keys'; //importing api key
 
 
-const Currency = () => {
+const Currency = (props) => {
+    const iso_code = props.currency.iso_code;
+    const currency = props.currency.name;
     const [amount, setAmount] = useState(null);
     const [local, setLocal] = useState(true);
-    const [quote, setQuote] = useState(null);
     const [convertion, setConvertion] = useState(null);
-    const currency = 'EUR';
 
-
+    var quote;
     var btn;
     if (local) {
         btn = 'USD to ' + currency;
@@ -30,20 +31,20 @@ const Currency = () => {
     }
 
 
-    let currencyLayer = (currency) => {
-        fetch('http://apilayer.net/api/live?access_key=39369fa26703b0fc03c4b4348e3aa1d3&&currencies=' + currency + '&format=1')
+    let currencyLayer = async (iso_code) => {
+        const response = await fetch('http://apilayer.net/api/live?access_key=' + CLkey +
+            '&&currencies=' + iso_code + '&format=1');
 
-            .then((response) => {
-                return response.json()
-            }).then((json) => {
-                setQuote(json.quotes.USDEUR);
-                console.log(json);
-            });
+        const data = response.json((json)=>{
+            json.quotes;
+        });    
+        return data;
     }
 
-    currencyLayer(currency);
-
-    let convert = () => {
+    let convert = async() => {
+        const quote = await currencyLayer(iso_code);
+        console.log(quote);
+        console.log('here');
         let conv;
         if (local) {
             conv = parseFloat(quote) * parseFloat(amount);
@@ -105,8 +106,8 @@ const Currency = () => {
                             borderColor: 'gray',
                             borderWidth: 1,
                             textAlign: 'center',
+                            paddingTop: 10,
                         }}>
-                            {'\n'}
                             {convertion} </Text>
                         <TextInput style={{
                             height: 40,

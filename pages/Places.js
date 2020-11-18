@@ -1,20 +1,15 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image } from 'react-native';
 import logoImg from '../assets/logo.jpg';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-const Home = (props) => {
+const Places = (props) => {
       
     const city = props.city;
     const country = props.country;
     
-    let text = '';
-    if (!city || !country) {
-        text = 'Loading...';
-    } else {
-        text = city + ', ' + country;
-
-    }
+    
 
     return (
         <View style={styles.containerMaster} >
@@ -23,14 +18,8 @@ const Home = (props) => {
                     source={logoImg}
                     style={styles.logo}
                 />
-                <Text style={styles.title} >Welcome to GeoLocation App</Text>
-                <Text style={styles.description} >Your current location is:</Text>
-                <Text style={styles.location} >{text}</Text>
-                <View>
-                    <Text style={styles.author} >Author:</Text>
-                    <Text style={styles.author} >Bruna Marjorie</Text>
-                </View>
-
+                <Text style={styles.title} >Places Visited</Text>
+                
             </View>
         </View>
     )
@@ -72,5 +61,5 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Home
+export default Places
 
