@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons, MaterialCommunityIcons,  } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { OCkey, OWkey } from './pages/keys'; //importing api keys
 
@@ -17,10 +17,13 @@ export default function App() {
   const Tab = createBottomTabNavigator(); //creating the navigation 
 
   const [currency, setCurrency] = useState(null);
+  const [lat, setLat] = useState(null);
+  const [long, setLong] = useState(null);
   const [city, setCity] = useState(null);
   const [country, setCountry] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [weather, setWeather] = useState(null);
+  const [weatherLogo, setWeatherLogo] = useState(null); 
 
 
   useEffect(() => {
@@ -36,6 +39,9 @@ export default function App() {
       let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Highest 
       });
+
+      setLat(location.coords.latitude);
+      setLong(location.coords.longitude);
 
       //colleting information about the place with coordinates given
       openCage(location.coords.latitude, location.coords.longitude);
@@ -85,6 +91,10 @@ export default function App() {
       })
       .then((json) => {
         setWeather(json); //collecting the weather information
+        let icon = (json.weather[0].icon)
+        icon = 'http://openweathermap.org/img/wn/'+icon+'@2x.png'
+        console.log(icon);
+        setWeatherLogo(icon);
         console.log(json);
       });
   }
@@ -116,7 +126,7 @@ export default function App() {
           <Tab.Screen
             name="Home"
             //passing the props
-            children={() => <Home city={city} country={country} />}
+            children={() => <Home city={city} country={country} lat={lat} long={long} />}
             options={{
               tabBarLabel: 'Home',
               tabBarIcon: () => (
@@ -128,7 +138,7 @@ export default function App() {
           <Tab.Screen
             name="Weather"
             //passing the props
-            children={() => <Weather weather={weather} />}
+            children={() => <Weather weather={weather} weatherLogo={weatherLogo}/>}
             options={{
               tabBarLabel: 'Weather',
               tabBarIcon: () => (

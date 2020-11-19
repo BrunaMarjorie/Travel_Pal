@@ -19,9 +19,9 @@ const Currency = (props) => {
     //setting the buttons for the type of convertion
     var btn;
     if (local) {
-        btn = 'USD to ' + iso_code;
+        btn = 'USD TO ' + iso_code;
     } else {
-        btn = iso_code + ' to USD';
+        btn = iso_code + ' TO USD';
     }
 
     //setting the iso_code to be displayed beside the amount and convertion
@@ -123,17 +123,16 @@ const Currency = (props) => {
                     </View>
                 </View>
                 <Text>  </Text>
-                <View style={styles.containerButton}>
-                    <Button title='CONVERT CURRENCY!'
-                        onPress={convert} />
-                    <Button title={btn}
-                        onPress={() => {
-                            setConvertion(null);
-                            if (local) {
-                                setLocal(false)
-                            } else { setLocal(true) }
-                        }} />
-                </View>
+                <Button title='CONVERT CURRENCY'
+                    onPress={convert} />
+                <Button title={btn}
+                    onPress={() => {
+                        setConvertion(null);
+                        if (local) {
+                            setLocal(false)
+                        } else { setLocal(true) }
+                    }} />
+
             </View>
         </View >
     )
@@ -184,7 +183,7 @@ const styles = StyleSheet.create({
     input: {
         justifyContent: 'space-around',
         flexDirection: 'row',
-    }
+    },
 
 })
 

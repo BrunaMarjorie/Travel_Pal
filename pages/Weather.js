@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, Animated } from 'react-native';
 import logoImg from '../assets/logo.jpg';
 
 
+
 const Weather = (props) => {
     //importing props
     const temp = parseInt(props.weather.main.temp);
@@ -11,7 +12,8 @@ const Weather = (props) => {
     const pressure = props.weather.main.pressure;
     const weather = props.weather.weather[0].main;
     const description = props.weather.weather[0].description;
-    
+    const weatherLogo = props.weatherLogo;               
+
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
@@ -20,6 +22,10 @@ const Weather = (props) => {
                     style={styles.logo}
                 />
                 <Text style={styles.title} >Weather</Text>
+                <Image
+                    source={{uri: weatherLogo}}
+                    style={styles.icon}
+                />
                 <Text style={styles.description} >{weather}: {description}</Text>
                 <Text></Text>
                 <View style={styles.containerOutput}>
@@ -63,10 +69,10 @@ const styles = StyleSheet.create({
     containerMaster: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#1E90FF',
     },
     container: {
-        backgroundColor: '#F3F4F4',
         justifyContent: 'space-between',
         alignItems: 'center',
         height: "70%",
@@ -81,6 +87,10 @@ const styles = StyleSheet.create({
     logo: {
         width: 300,
         height: 79
+    },
+    icon: {
+        width: 100,
+        height: 50
     },
     title: {
         fontWeight: "bold",

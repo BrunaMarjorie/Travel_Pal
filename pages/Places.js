@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, Button } from 'react-native';
+import { StyleSheet, View, Text, Image, Button, ScrollView } from 'react-native';
 import logoImg from '../assets/logo.jpg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Places = (props) => {
 
-    var allLocals = [];
-    var allDates = [];
-    var localsList;
+    var data = [];
+    let [allLocals, setAllLocals] = useState([]);
+    let [allDates, setAllDates] = useState([]);
+
 
     let date = new Date();
     date = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getUTCFullYear();
@@ -53,9 +54,11 @@ const Places = (props) => {
                 const places = JSON.parse(value);
                 places.forEach(element => {
                     allLocals.push(element.place);
-                    allDates.push(element.date);
+                    data.push(element.date);
                 });
                 console.log(allLocals);
+                console.log(allDates);
+                setAllDates(data);
                 return places;
             } else {
                 return null;
@@ -65,6 +68,8 @@ const Places = (props) => {
         }
     }
 
+
+
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
@@ -72,25 +77,16 @@ const Places = (props) => {
                     source={logoImg}
                     style={styles.logo}
                 />
-                <Text style={styles.title} >Places Visited</Text>
                 <Text></Text>
-                <View style={styles.containerOutput}>
-                    <Text style={{
-                        width: 300,
-                        textAlign: 'left',
-                    }}>
-                        {'Places \n'}
-                        {localsList} </Text>
-                    <Text style={{
-                        width: 100,
-                        textAlign: 'right',
-                    }}>
-                        {'Dates \n'}
-                        {allDates} </Text>
-                </View>
-                <Button title='SAVE PLACE'
-                    onPress={saveData} />
-
+                <Text style={styles.title} >My Places</Text>
+                <ScrollView>
+                    <View>
+                        {allDates.map((eachDate, key) => {
+                            return <Text key={key}>{eachDate}</Text>
+                        }
+                        )}
+                    </View>
+                </ScrollView>
             </View>
         </View>
     )
@@ -132,10 +128,6 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 18,
     },
-    author: {
-        maxWidth: 250,
-        textAlign: 'center'
-    }
 })
 
 export default Places

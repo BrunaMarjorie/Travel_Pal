@@ -1,20 +1,25 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, Button, Linking } from 'react-native';
 import logoImg from '../assets/logo.jpg';
+//import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 
 const Home = (props) => {
-      
+
     //importing props
-    const city = props.city; 
+    const city = props.city;
     const country = props.country;
-    
+
+    let lat = 0;
+    let long = 0;
+
     let text = '';
     if (!city || !country) {
         text = 'Loading...'; //text displayed while loading
     } else {
         text = city + ', ' + country; //text changes when loaded
-
+        lat = props.lat;
+        long = props.long;
     }
 
     return (
@@ -27,6 +32,26 @@ const Home = (props) => {
                 <Text style={styles.title} >Welcome to GeoLocation App</Text>
                 <Text style={styles.description} >Your current location is:</Text>
                 <Text style={styles.location} >{text}</Text>
+                {/*<MapView
+                    provider={PROVIDER_GOOGLE}
+                    region={{
+                        latitude: lat,
+                        longitude: long,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                      }}
+                    minZoomLevel={17}
+                    style={styles.mapStyle}
+                >
+                    Marker component that renders a component on map
+                    <Marker coordinate={{ latitude: lat, longitude: long }} />
+                </MapView>*/}
+                <Button
+                    title='Open in Map'
+                    onPress={() => {
+                        Linking.openURL(`https://www.google.com/maps/place/${lat},${long}`);
+                    }}
+                />
                 <View>
                     <Text style={styles.author} >Author:</Text>
                     <Text style={styles.author} >Bruna Marjorie</Text>
@@ -70,7 +95,12 @@ const styles = StyleSheet.create({
     author: {
         maxWidth: 250,
         textAlign: 'center'
-    }
+    },
+    // mapStyle: {
+    //     width: '90%',
+    //     height: '40%',
+    //     marginTop: 20
+    // },
 })
 
 export default Home
