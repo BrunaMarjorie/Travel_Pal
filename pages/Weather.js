@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Image, Animated } from 'react-native';
 import logoImg from '../assets/logo.jpg';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-
-const Weather = () => {
-    const [temp, setTemp] = useState(null);
-    const [feels, setFeels] = useState(null);
-    const [humidity, setHumidity] = useState(null);
-    const [pressure, setPressure] = useState(null);
-    const [logo, setLogo] = useState(null);
-    const [weather, setWeather] = useState(null);
-    const [desc, setDesc] = useState(null);
-
-    setTemp(json.main.temp);
-        setFeels(json.main.feels_like);
-        setHumidity(json.main.humidity);
-        setPressure(json.main.pressure);
-        setWeather(json.weather[0].main);
-        setLogo(json.weather[0].id);
-        setDesc(json.weather[0].description);
-
+const Weather = (props) => {
+    //importing props
+    const temp = parseInt(props.weather.main.temp);
+    const feels = parseInt(props.weather.main.feels_like);
+    const humidity = props.weather.main.humidity;
+    const pressure = props.weather.main.pressure;
+    const weather = props.weather.weather[0].main;
+    const description = props.weather.weather[0].description;
+    
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
@@ -30,7 +20,7 @@ const Weather = () => {
                     style={styles.logo}
                 />
                 <Text style={styles.title} >Weather</Text>
-                <Text style={styles.description} >{weather}: {desc}</Text>
+                <Text style={styles.description} >{weather}: {description}</Text>
                 <Text></Text>
                 <View style={styles.containerOutput}>
                     <Text style={{
@@ -66,8 +56,6 @@ const Weather = () => {
         </View>
     )
 }
-
-
 
 
 // This variable contains all the css of this screen

@@ -5,14 +5,15 @@ import logoImg from '../assets/logo.jpg';
 
 const Home = (props) => {
       
-    const city = props.city;
+    //importing props
+    const city = props.city; 
     const country = props.country;
     
     let text = '';
     if (!city || !country) {
-        text = 'Loading...';
+        text = 'Loading...'; //text displayed while loading
     } else {
-        text = city + ', ' + country;
+        text = city + ', ' + country; //text changes when loaded
 
     }
 

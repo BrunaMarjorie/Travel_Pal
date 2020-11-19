@@ -6,58 +6,58 @@ import { CLkey } from './keys'; //importing api key
 
 
 const Currency = (props) => {
+    //importing props
     const iso_code = props.currency.iso_code;
-    const currency = props.currency.name;
-    const [amount, setAmount] = useState(null);
+    const name = props.currency.name; //name of the currency
+    const [amount, setAmount] = useState(null); //amount to be converted
+    //local means convertion is USD to local currency
     const [local, setLocal] = useState(true);
-    const [convertion, setConvertion] = useState(null);
+    const [convertion, setConvertion] = useState(null); //value converted
 
-    var quote;
+    var quote; //rate collected
+
+    //setting the buttons for the type of convertion
     var btn;
     if (local) {
-        btn = 'USD to ' + currency;
+        btn = 'USD to ' + iso_code;
     } else {
-        btn = currency + ' to USD';
+        btn = iso_code + ' to USD';
     }
 
-    var inp1;
-    var inp2;
+    //setting the iso_code to be displayed beside the amount and convertion
+    var inp1; //beside amount
+    var inp2; //beside convertion
     if (local) {
         inp1 = 'USD';
-        inp2 = currency;
+        inp2 = iso_code;
     } else {
-        inp1 = currency;
+        inp1 = iso_code;
         inp2 = 'USD';
     }
 
-
+    //fetching currencyLayer api
     let currencyLayer = async (iso_code) => {
         const response = await fetch('http://apilayer.net/api/live?access_key=' + CLkey +
             '&&currencies=' + iso_code + '&format=1');
-
-        const data = response.json((json)=>{
+        const results = response.json((json) => {
             json.quotes;
-        });    
-        return data;
+        });
+        return results;
     }
 
-    let convert = async() => {
-        const quote = await currencyLayer(iso_code);
-        console.log(quote);
-        console.log('here');
+    //converting the amount passed
+    let convert = async () => {
+        const data = await currencyLayer(iso_code);
+        const arr = Object.keys(data.quotes);
+        quote = (data.quotes[arr[0]]); //rate updated
         let conv;
-        if (local) {
+        if (local) { //converting USD to local
             conv = parseFloat(quote) * parseFloat(amount);
             setConvertion(conv.toFixed(2));
-            inp2 = convertion + '  USD';
-            console.log(inp2);
-        } else {
+        } else { //converting local to USD
             conv = (1 / parseFloat(quote)) * parseFloat(amount);
             setConvertion(conv.toFixed(2));
-            inp2 = convertion + '  ' + currency;
-            console.log(inp2);
         }
-
     }
 
     return (
@@ -70,7 +70,7 @@ const Currency = (props) => {
                 <Text>  </Text>
                 <Text style={styles.title} >Currency Conversion</Text>
                 <Text>  </Text>
-                <Text style={styles.description} >The local currency is {currency}</Text>
+                <Text style={styles.description} >The local currency is {name}</Text>
                 <Text>  </Text>
                 <View style={styles.containerButton}>
                     <View style={styles.input}>
@@ -82,6 +82,7 @@ const Currency = (props) => {
                             textAlign: 'center',
                             textAlignVertical: 'bottom',
                         }}
+                            //collecting the amount desired
                             onChangeText={setAmount}
                             placeholder='1.00' />
 
@@ -127,6 +128,7 @@ const Currency = (props) => {
                         onPress={convert} />
                     <Button title={btn}
                         onPress={() => {
+                            setConvertion(null);
                             if (local) {
                                 setLocal(false)
                             } else { setLocal(true) }

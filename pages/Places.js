@@ -1,15 +1,69 @@
-import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Image, Button } from 'react-native';
 import logoImg from '../assets/logo.jpg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Places = (props) => {
-      
-    const city = props.city;
-    const country = props.country;
-    
-    
+
+    var allLocals = [];
+    var allDates = [];
+    var localsList;
+
+    let date = new Date();
+    date = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getUTCFullYear();
+
+    useEffect(() => {
+        (async () => {
+
+            getAllData();
+
+        })();
+    }, []);
+
+
+    let saveData = async () => {
+        var allLocations = await getAllData();
+        if (allLocations == null) {
+            allLocations = [];
+        }
+        console.log(allLocations);
+        const location = {
+            'place': props.city + ', ' + props.country,
+            'date': date
+        }
+        try {
+            const value = JSON.stringify(location);
+            await AsyncStorage.setItem('location', value);
+            allLocations.push(location);
+
+            const allValues = JSON.stringify(allLocations);
+            await AsyncStorage.setItem('allLocations', allValues);
+
+            console.log('data saved');
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    let getAllData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('allLocations');
+            if (value !== null) {
+                const places = JSON.parse(value);
+                places.forEach(element => {
+                    allLocals.push(element.place);
+                    allDates.push(element.date);
+                });
+                console.log(allLocals);
+                return places;
+            } else {
+                return null;
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     return (
         <View style={styles.containerMaster} >
@@ -19,7 +73,24 @@ const Places = (props) => {
                     style={styles.logo}
                 />
                 <Text style={styles.title} >Places Visited</Text>
-                
+                <Text></Text>
+                <View style={styles.containerOutput}>
+                    <Text style={{
+                        width: 300,
+                        textAlign: 'left',
+                    }}>
+                        {'Places \n'}
+                        {localsList} </Text>
+                    <Text style={{
+                        width: 100,
+                        textAlign: 'right',
+                    }}>
+                        {'Dates \n'}
+                        {allDates} </Text>
+                </View>
+                <Button title='SAVE PLACE'
+                    onPress={saveData} />
+
             </View>
         </View>
     )
@@ -39,6 +110,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: "70%",
         width: 500,
+    },
+    containerOutput: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: 300,
     },
     logo: {
         width: 300,
