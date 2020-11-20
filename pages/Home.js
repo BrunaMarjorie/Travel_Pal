@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Button, Linking } from 'react-native';
-//import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 
 const Home = (props) => {
@@ -27,7 +27,7 @@ const Home = (props) => {
                 <Text style={styles.title} >Welcome to GeoLocation App</Text>
                 <Text style={styles.description} >Your current location is:</Text>
                 <Text style={styles.location} >{text}</Text>
-                {/*<MapView
+                <MapView
                     provider={PROVIDER_GOOGLE}
                     region={{
                         latitude: lat,
@@ -38,9 +38,9 @@ const Home = (props) => {
                     minZoomLevel={17}
                     style={styles.mapStyle}
                 >
-                    Marker component that renders a component on map
+                    {/*Marker component that renders a component on map*/}
                     <Marker coordinate={{ latitude: lat, longitude: long }} />
-                </MapView>*/}
+                </MapView>
                 <Button
                     title='View in Map'
                     onPress={() => {
@@ -91,11 +91,11 @@ const styles = StyleSheet.create({
         maxWidth: 250,
         textAlign: 'center'
     },
-    // mapStyle: {
-    //     width: '90%',
-    //     height: '40%',
-    //     marginTop: 20
-    // },
+    mapStyle: {
+        width: '90%',
+        height: '40%',
+        marginTop: 20
+    },
 })
 
 export default Home

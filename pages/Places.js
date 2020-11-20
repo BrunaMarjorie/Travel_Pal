@@ -85,8 +85,8 @@ const Places = (props) => {
                             return <Button color={'black'} key={key} title={place.place} 
                             onPress={()=> Alert.alert(
                                 place.place + ' on ' + place.date,
-                                'Weather: '+place.descr+' ('+place.temp+'\u00b0) \n Local currency: '
-                                +place.currency+ '\n Rate at the day: 1 USD = '+place.rate+ ' '+place.iso_code
+                                '\n Weather: '+place.descr+' ('+place.temp+'\u00b0) \n \n Local currency: '
+                                +place.currency+ '\n \n Day rate: 1 USD = '+place.rate+ ' '+place.iso_code
                                 
                                 )}/>
                         }

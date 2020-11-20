@@ -58,7 +58,7 @@ export default function App() {
 
   //fetching data from api openCage
   let openCage = (lat, long) => {
-
+    setLoading(false);
     //passing key and coordinates
     fetch('https://api.opencagedata.com/geocode/v1/json?key=' + OCkey +
       '&language=en&pretty=1&q=' + lat + '+' + long)
@@ -113,7 +113,6 @@ export default function App() {
         })
         .then((json) => {
           setQuote(json.quotes[Object.keys(json.quotes)[0]]);
-          setLoading(false);
           console.log(json);
         })
     }
