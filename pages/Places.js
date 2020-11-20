@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Button, ScrollView, Alert } from 'react-native';
+import { StyleSheet, View, Text, Button, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -8,7 +8,7 @@ const Places = (props) => {
     const [places, setPlaces] = useState([]);
     const description = props.weather.weather[0].description;
     const temp = parseInt(props.weather.main.temp);
-    const {name, iso_code} = props.currency; //name and iso_code of the currency
+    const { name, iso_code } = props.currency; //name and iso_code of the currency
     const quote = parseFloat(props.quote); //rate collected
 
 
@@ -79,16 +79,18 @@ const Places = (props) => {
                 <Text></Text>
                 <Text style={styles.title} >My Places</Text>
                 <Text></Text>
+                <Text style={styles.description} >Click on the city for details:</Text>
+                <Text></Text>
                 <ScrollView style={styles.containerScrowView}>
                     <View style={styles.containerOutput}>
                         {places.map((place, key) => {
-                            return <Button color={'black'} key={key} title={place.place} 
-                            onPress={()=> Alert.alert(
-                                place.place + ' on ' + place.date,
-                                '\n Weather: '+place.descr+' ('+place.temp+'\u00b0) \n \n Local currency: '
-                                +place.currency+ '\n \n Day rate: 1 USD = '+place.rate+ ' '+place.iso_code
-                                
-                                )}/>
+                            return <Button color={'darkblue'} key={key} title={place.place}
+                                onPress={() => Alert.alert(
+                                    place.place + ' on ' + place.date,
+                                    '\n Weather: ' + place.descr + ' (' + place.temp + '\u00b0) \n \n Local currency: '
+                                    + place.currency + '\n \n Day rate: 1 USD = ' + place.rate + ' ' + place.iso_code
+
+                                )} />
                         }
                         )}
                     </View>
@@ -129,12 +131,15 @@ const styles = StyleSheet.create({
         height: 80,
     },
     containerScrowView: {
-        width: 500
+        width: 300
     },
     title: {
         fontWeight: "bold",
         fontSize: 24,
         marginTop: 30,
+    },
+    description: {
+        fontSize: 18
     },
 })
 
