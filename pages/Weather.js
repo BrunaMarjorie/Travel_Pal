@@ -4,18 +4,19 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 
 const Weather = (props) => {
     //importing props
-    const {temp, feels_like, humidity, pressure} = props.weather.main
-    const {main, description} = props.weather.weather[0];
-    const weatherLogo = props.weatherLogo;               
+    const { temp, feels_like, humidity, pressure } = props.weather.main
+    const { main, description } = props.weather.weather[0];
+    const weatherLogo = props.weatherLogo;
 
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
                 <Text style={styles.title} >Weather</Text>
-                <Image
-                    source={{uri: weatherLogo}}
+                <Image //displaying image for the weather
+                    source={{ uri: weatherLogo }}
                     style={styles.icon}
                 />
+                {/* displaying description of the weather*/}
                 <Text style={styles.description} >{main}: {description}</Text>
                 <Text></Text>
                 <View style={styles.containerOutput}>
@@ -23,12 +24,14 @@ const Weather = (props) => {
                         width: 100,
                         textAlign: 'center',
                     }}>
+                        {/* displaying temperature without decimals */}
                         {'TEMPERATURE \n'}
                         {parseInt(temp)}{'\u00b0'} </Text>
                     <Text style={{
                         width: 100,
                         textAlign: 'center',
                     }}>
+                        {/* displaying feels like without decimals */}
                         {'FEELS LIKE \n'}
                         {parseInt(feels_like)}{'\u00b0'} </Text>
                 </View>
@@ -39,12 +42,14 @@ const Weather = (props) => {
                         width: 100,
                         textAlign: 'center',
                     }}>
+                        {/* displaying humidity with % */}
                         {'HUMIDITY \n'}
                         {humidity}% </Text>
                     <Text style={{
                         width: 100,
                         textAlign: 'center',
                     }}>
+                        {/* displaying pressure with hPa */}
                         {'PRESSURE \n'}
                         {pressure} hPa </Text>
                 </View>
@@ -74,10 +79,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: 300,
     },
-    logo: {
-        width: 300,
-        height: 79
-    },
     icon: {
         width: 100,
         height: 50
@@ -89,14 +90,6 @@ const styles = StyleSheet.create({
     description: {
         fontSize: 18
     },
-    location: {
-        fontWeight: "bold",
-        fontSize: 18,
-    },
-    author: {
-        maxWidth: 250,
-        textAlign: 'center'
-    }
 })
 
 export default Weather

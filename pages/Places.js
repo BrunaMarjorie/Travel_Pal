@@ -1,37 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Button, ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Button, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Places = (props) => {
 
-    const [places, setPlaces] = useState([]);
+    const [places, setPlaces] = useState([]); //list of visited places and their details
+    //importing props
     const description = props.weather.weather[0].description;
     const temp = parseInt(props.weather.main.temp);
     const { name, iso_code } = props.currency; //name and iso_code of the currency
     const quote = parseFloat(props.quote); //rate collected
 
-
-
-
+    //collecting current day information
     let date = new Date();
     date = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getUTCFullYear();
 
     useEffect(() => {
         (async () => {
 
-            getAllData();
+            getAllData(); //calling all the data 
 
         })();
     }, []);
 
 
+    //saving data 
     let saveData = async () => {
-        var allLocations = await getAllData();
+        var allLocations = await getAllData(); //collecting the data previously saved
         if (allLocations == null) {
-            allLocations = [];
+            allLocations = []; //if no data found, set an empty array
         }
-        console.log(allLocations);
+
+        //data to be saved
         const location = {
             'place': props.city + ', ' + props.country,
             'date': '10/11/2020',
@@ -41,15 +42,20 @@ const Places = (props) => {
             'iso_code': iso_code,
             'rate': quote.toFixed(2),
         }
-        try {
-            const value = JSON.stringify(location);
-            await AsyncStorage.setItem('location', value);
-            allLocations.push(location);
 
+        try {
+            //conveting JSON to string
+            const value = JSON.stringify(location);
+            //saving variable
+            await AsyncStorage.setItem('location', value);
+            //adding new data to the main array
+            allLocations.push(location);
+            //converting the main array to string
             const allValues = JSON.stringify(allLocations);
+            //saving the array with all the places visited
             await AsyncStorage.setItem('allLocations', allValues);
 
-            getAllData();
+            getAllData(); //updating the list displayed
 
             console.log('data saved');
         } catch (e) {
@@ -57,9 +63,12 @@ const Places = (props) => {
         }
     };
 
+    //getting all the data saved
     let getAllData = async () => {
         try {
+            //collecting the data previously saved
             const value = await AsyncStorage.getItem('allLocations');
+            //if data found, set the list of places visited
             if (value !== null) {
                 setPlaces(JSON.parse(value));
                 console.log(places);
@@ -83,8 +92,11 @@ const Places = (props) => {
                 <Text></Text>
                 <ScrollView style={styles.containerScrowView}>
                     <View style={styles.containerOutput}>
+                        {/* using map to go through the array create buttons */}
                         {places.map((place, key) => {
                             return <Button color={'darkblue'} key={key} title={place.place}
+                                //when pressed the button, an alert will be send 
+                                //with the collected information
                                 onPress={() => Alert.alert(
                                     place.place + ' on ' + place.date,
                                     '\n Weather: ' + place.descr + ' (' + place.temp + '\u00b0) \n \n Local currency: '
@@ -98,7 +110,7 @@ const Places = (props) => {
                 <Text></Text>
             </View>
             <View style={{ marginTop: 10 }}>
-                <Button title='SAVE DATA'
+                <Button title='SAVE DATA' //saving the data
                     onPress={saveData} />
             </View>
 

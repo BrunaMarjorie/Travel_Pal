@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image, Button, Linking } from 'react-native';
+import { StyleSheet, View, Text, Button, Linking } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 
@@ -38,10 +38,11 @@ const Home = (props) => {
                     minZoomLevel={17}
                     style={styles.mapStyle}
                 >
-                    {/*Marker component that renders a component on map*/}
+                    {/*Marker to the current location*/}
                     <Marker coordinate={{ latitude: lat, longitude: long }} />
                 </MapView>
                 <Button
+                    //link to the GoogleMaps
                     title='View in Map'
                     onPress={() => {
                         Linking.openURL(`https://www.google.com/maps/place/${lat},${long}`);
