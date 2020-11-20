@@ -13,15 +13,14 @@ const Currency = (props) => {
     //local means convertion is USD to local currency
     const [local, setLocal] = useState(true);
     const [convertion, setConvertion] = useState(null); //value converted
-
-    var quote; //rate collected
+    const quote = props.quote; //rate collected
 
     //setting the buttons for the type of convertion
     var btn;
     if (local) {
-        btn = 'USD TO ' + iso_code;
+        btn = 'Change to ' + iso_code + ' TO USD?';
     } else {
-        btn = iso_code + ' TO USD';
+        btn = 'Change to USD TO ' + iso_code + '?' ;
     }
 
     //setting the iso_code to be displayed beside the amount and convertion
@@ -35,21 +34,8 @@ const Currency = (props) => {
         inp2 = 'USD';
     }
 
-    //fetching currencyLayer api
-    let currencyLayer = async (iso_code) => {
-        const response = await fetch('http://apilayer.net/api/live?access_key=' + CLkey +
-            '&&currencies=' + iso_code + '&format=1');
-        const results = response.json((json) => {
-            json.quotes;
-        });
-        return results;
-    }
-
     //converting the amount passed
     let convert = async () => {
-        const data = await currencyLayer(iso_code);
-        const arr = Object.keys(data.quotes);
-        quote = (data.quotes[arr[0]]); //rate updated
         let conv;
         if (local) { //converting USD to local
             conv = parseFloat(quote) * parseFloat(amount);
@@ -70,7 +56,7 @@ const Currency = (props) => {
                 <Text>  </Text>
                 <Text style={styles.title} >Currency Conversion</Text>
                 <Text>  </Text>
-                <Text style={styles.description} >The local currency is {name}</Text>
+                <Text style={styles.description} >The local currency is: {name}</Text>
                 <Text>  </Text>
                 <View style={styles.containerButton}>
                     <View style={styles.input}>
@@ -123,7 +109,7 @@ const Currency = (props) => {
                     </View>
                 </View>
                 <Text>  </Text>
-                <Button title='CONVERT CURRENCY'
+                <Button title='GET CONVERTION'
                     onPress={convert} />
                 <Button title={btn}
                     onPress={() => {

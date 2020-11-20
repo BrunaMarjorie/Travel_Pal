@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
-import { OCkey, OWkey } from './pages/keys'; //importing api keys
+import { OCkey, OWkey, CLkey } from './pages/keys'; //importing api keys
 
 
 import Currency from './pages/Currency'; //importing Currency Screen
@@ -23,7 +23,9 @@ export default function App() {
   const [country, setCountry] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [weather, setWeather] = useState(null);
-  const [weatherLogo, setWeatherLogo] = useState(null); 
+  const [weatherLogo, setWeatherLogo] = useState(null);
+  const [quote, setQuote] = useState(null);
+  const [iso_code, setIso_code] = useState(null);
 
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function App() {
 
       //collecting location
       let location = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Highest 
+        accuracy: Location.Accuracy.Highest
       });
 
       setLat(location.coords.latitude);
@@ -75,6 +77,7 @@ export default function App() {
         }
         setCountry(json.results[0].components.country); //collecting the country
         setCurrency(json.results[0].annotations.currency); //collecting the local currency
+        setIso_code(json.results[0].annotations.currency.iso_code);
         console.log(json);
       });
   }
@@ -92,12 +95,25 @@ export default function App() {
       .then((json) => {
         setWeather(json); //collecting the weather information
         let icon = (json.weather[0].icon)
-        icon = 'http://openweathermap.org/img/wn/'+icon+'@2x.png'
+        icon = 'http://openweathermap.org/img/wn/' + icon + '@2x.png'
         console.log(icon);
         setWeatherLogo(icon);
         console.log(json);
       });
   }
+
+  useEffect(() => {
+    if (iso_code !== null) {
+      fetch('http://apilayer.net/api/live?access_key=' + CLkey +
+        '&&currencies=' + iso_code + '&format=1')
+        .then((response) => {
+          return response.json()
+        })
+        .then((json) => {
+          setQuote(json.quotes[Object.keys(json.quotes)[0]]);
+        })
+    }
+  }, [iso_code]);
 
 
   return (
@@ -114,7 +130,7 @@ export default function App() {
           <Tab.Screen
             name="Currency"
             //passing the props
-            children={() => <Currency currency={currency} />} 
+            children={() => <Currency currency={currency} quote={quote} />}
             options={{
               tabBarLabel: 'Currency',
               tabBarIcon: () => (
@@ -138,7 +154,7 @@ export default function App() {
           <Tab.Screen
             name="Weather"
             //passing the props
-            children={() => <Weather weather={weather} weatherLogo={weatherLogo}/>}
+            children={() => <Weather weather={weather} weatherLogo={weatherLogo} />}
             options={{
               tabBarLabel: 'Weather',
               tabBarIcon: () => (
@@ -150,7 +166,7 @@ export default function App() {
           <Tab.Screen
             name="My Places"
             //passing the props
-            children={() => <Places city={city} country={country} />}
+            children={() => <Places city={city} country={country} currency={currency} quote={quote} weather={weather} />}
             options={{
               tabBarLabel: 'My Places',
               tabBarIcon: () => (

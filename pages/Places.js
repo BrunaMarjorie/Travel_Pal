@@ -6,9 +6,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Places = (props) => {
 
-    var data = [];
     let [allLocals, setAllLocals] = useState([]);
-    let [allDates, setAllDates] = useState([]);
+    const [places, setPlaces] = useState([]);
+    const description = props.weather.weather[0].description;
+    const temp = parseInt(props.weather.main.temp);
+    const name = props.currency.name; //name of the currency
+    const quote = props.quote; //rate collected
+
 
 
     let date = new Date();
@@ -31,7 +35,11 @@ const Places = (props) => {
         console.log(allLocations);
         const location = {
             'place': props.city + ', ' + props.country,
-            'date': date
+            'date': date,
+            'temp': temp,
+            'descr': description,
+            'currency': name,
+            'rate': quote,
         }
         try {
             const value = JSON.stringify(location);
@@ -40,6 +48,8 @@ const Places = (props) => {
 
             const allValues = JSON.stringify(allLocations);
             await AsyncStorage.setItem('allLocations', allValues);
+
+            getAllData();
 
             console.log('data saved');
         } catch (e) {
@@ -51,14 +61,8 @@ const Places = (props) => {
         try {
             const value = await AsyncStorage.getItem('allLocations');
             if (value !== null) {
-                const places = JSON.parse(value);
-                places.forEach(element => {
-                    allLocals.push(element.place);
-                    data.push(element.date);
-                });
-                console.log(allLocals);
-                console.log(allDates);
-                setAllDates(data);
+                setPlaces(JSON.parse(value));
+                console.log(places);
                 return places;
             } else {
                 return null;
@@ -67,7 +71,6 @@ const Places = (props) => {
             console.log(e);
         }
     }
-
 
 
     return (
@@ -79,15 +82,24 @@ const Places = (props) => {
                 />
                 <Text></Text>
                 <Text style={styles.title} >My Places</Text>
-                <ScrollView>
-                    <View>
-                        {allDates.map((eachDate, key) => {
-                            return <Text key={key}>{eachDate}</Text>
+                <Text></Text>
+                <ScrollView style={styles.containerScrowView}>
+                    <View style={styles.containerOutput}>
+                        {places.map((place, key) => {
+                            return <Button key={key} title={place.place} 
+                            onPress={()=> alert(place.place)
+                            }/>
                         }
                         )}
                     </View>
                 </ScrollView>
+                <Text></Text>
             </View>
+            <View style={{ marginTop: 10 }}>
+                <Button title='SAVE DATA'
+                    onPress={saveData} />
+            </View>
+
         </View>
     )
 }
@@ -108,10 +120,16 @@ const styles = StyleSheet.create({
         width: 500,
     },
     containerOutput: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 20,
         width: 300,
+        height: 300,
+    },
+    containerScrowView: {
+        minHeight: 200,
     },
     logo: {
         width: 300,
@@ -119,7 +137,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: "bold",
-        fontSize: 24
+        fontSize: 24,
+        marginTop: 30,
     },
     description: {
         fontSize: 18

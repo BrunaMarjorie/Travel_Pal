@@ -3,15 +3,10 @@ import { StyleSheet, View, Text, Image, Animated } from 'react-native';
 import logoImg from '../assets/logo.jpg';
 
 
-
 const Weather = (props) => {
     //importing props
-    const temp = parseInt(props.weather.main.temp);
-    const feels = parseInt(props.weather.main.feels_like);
-    const humidity = props.weather.main.humidity;
-    const pressure = props.weather.main.pressure;
-    const weather = props.weather.weather[0].main;
-    const description = props.weather.weather[0].description;
+    const {temp, feels_like, humidity, pressure} = props.weather.main
+    const {main, description} = props.weather.weather[0];
     const weatherLogo = props.weatherLogo;               
 
     return (
@@ -26,7 +21,7 @@ const Weather = (props) => {
                     source={{uri: weatherLogo}}
                     style={styles.icon}
                 />
-                <Text style={styles.description} >{weather}: {description}</Text>
+                <Text style={styles.description} >{main}: {description}</Text>
                 <Text></Text>
                 <View style={styles.containerOutput}>
                     <Text style={{
@@ -34,13 +29,13 @@ const Weather = (props) => {
                         textAlign: 'center',
                     }}>
                         {'TEMPERATURE \n'}
-                        {temp} </Text>
+                        {parseInt(temp)} </Text>
                     <Text style={{
                         width: 100,
                         textAlign: 'center',
                     }}>
                         {'FEELS LIKE \n'}
-                        {feels} </Text>
+                        {parseInt(feels_like)} </Text>
                 </View>
                 <Text>________________________________________________________</Text>
                 <Text></Text>
