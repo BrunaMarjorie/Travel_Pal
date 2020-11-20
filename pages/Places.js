@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, Button, ScrollView } from 'react-native';
-import logoImg from '../assets/logo.jpg';
+import { StyleSheet, View, Text, Button, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Places = (props) => {
 
-    let [allLocals, setAllLocals] = useState([]);
     const [places, setPlaces] = useState([]);
     const description = props.weather.weather[0].description;
     const temp = parseInt(props.weather.main.temp);
-    const name = props.currency.name; //name of the currency
+    const {name, iso_code} = props.currency; //name and iso_code of the currency
     const quote = props.quote; //rate collected
+
 
 
 
@@ -39,6 +38,7 @@ const Places = (props) => {
             'temp': temp,
             'descr': description,
             'currency': name,
+            'iso_code': iso_code,
             'rate': quote,
         }
         try {
@@ -76,18 +76,14 @@ const Places = (props) => {
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
-                <Image
-                    source={logoImg}
-                    style={styles.logo}
-                />
                 <Text></Text>
                 <Text style={styles.title} >My Places</Text>
                 <Text></Text>
                 <ScrollView style={styles.containerScrowView}>
                     <View style={styles.containerOutput}>
                         {places.map((place, key) => {
-                            return <Button key={key} title={place.place} 
-                            onPress={()=> alert(place.place)
+                            return <Button color={'black'} key={key} title={place.place} 
+                            onPress={()=> Alert.alert(place.place)
                             }/>
                         }
                         )}
@@ -116,7 +112,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F3F4F4',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: "70%",
+        height: "80%",
         width: 500,
     },
     containerOutput: {
@@ -131,21 +127,10 @@ const styles = StyleSheet.create({
     containerScrowView: {
         minHeight: 200,
     },
-    logo: {
-        width: 300,
-        height: 79
-    },
     title: {
         fontWeight: "bold",
         fontSize: 24,
         marginTop: 30,
-    },
-    description: {
-        fontSize: 18
-    },
-    location: {
-        fontWeight: "bold",
-        fontSize: 18,
     },
 })
 
