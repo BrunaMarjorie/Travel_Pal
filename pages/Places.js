@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button, ScrollView, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AwesomeAlert from 'react-native-awesome-alerts';
 
 
 const Places = (props) => {
@@ -127,7 +126,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 20,
         width: 300,
-        height: 300,
+        height: 80,
     },
     containerScrowView: {
         width: 500

@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
 import { OCkey, OWkey, CLkey } from './pages/keys'; //importing api keys
+import LoadingView from 'react-native-loading-view';
 
 
 import Currency from './pages/Currency'; //importing Currency Screen
@@ -26,6 +27,7 @@ export default function App() {
   const [weatherLogo, setWeatherLogo] = useState(null);
   const [quote, setQuote] = useState(null);
   const [iso_code, setIso_code] = useState(null);
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -44,12 +46,12 @@ export default function App() {
 
       setLat(location.coords.latitude);
       setLong(location.coords.longitude);
-     
+
       //colleting information about the place with coordinates given
-      //openCage(location.coords.latitude, location.coords.longitude);
-      openCage('-10.5434', '-37.0429');
+      openCage(location.coords.latitude, location.coords.longitude);
+      //openCage('-10.5434', '-37.0429');
       //colleting information about the weather with coordinates given
-      openWeather('-10.5434', '-37.0429');
+      openWeather(location.coords.latitude, location.coords.longitude);
 
     })();
   }, []);
@@ -111,6 +113,7 @@ export default function App() {
         })
         .then((json) => {
           setQuote(json.quotes[Object.keys(json.quotes)[0]]);
+          setLoading(false);
           console.log(json);
         })
     }
@@ -119,65 +122,67 @@ export default function App() {
 
   return (
     <>
-      <NavigationContainer>
-        <Tab.Navigator
-          initialRouteName="Home" //setting Home as the main screen
-          tabBarOptions={{
-            activeTintColor: '#e91e63',
-            labelPosition: 'below-icon'
-          }}
+      <LoadingView loading={loading}>
+        <NavigationContainer>
+          <Tab.Navigator
+            initialRouteName="Home" //setting Home as the main screen
+            tabBarOptions={{
+              activeTintColor: '#e91e63',
+              labelPosition: 'below-icon'
+            }}
 
-        >
-          <Tab.Screen
-            name="Currency"
-            //passing the props
-            children={() => <Currency currency={currency} quote={quote} />}
-            options={{
-              tabBarLabel: 'Currency',
-              tabBarIcon: () => (
-                //inserting icon
-                <MaterialCommunityIcons name="currency-usd" size={24} color="black" />
-              ),
-            }} />
+          >
+            <Tab.Screen
+              name="Currency"
+              //passing the props
+              children={() => <Currency currency={currency} quote={quote} />}
+              options={{
+                tabBarLabel: 'Currency',
+                tabBarIcon: () => (
+                  //inserting icon
+                  <MaterialCommunityIcons name="currency-usd" size={24} color="black" />
+                ),
+              }} />
 
-          <Tab.Screen
-            name="Home"
-            //passing the props
-            children={() => <Home city={city} country={country} lat={lat} long={long} />}
-            options={{
-              tabBarLabel: 'Home',
-              tabBarIcon: () => (
-                //inserting icon
-                <Ionicons name="ios-home" size={24} color="black" />
-              ),
-            }} />
+            <Tab.Screen
+              name="Home"
+              //passing the props
+              children={() => <Home city={city} country={country} lat={lat} long={long} />}
+              options={{
+                tabBarLabel: 'Home',
+                tabBarIcon: () => (
+                  //inserting icon
+                  <Ionicons name="ios-home" size={24} color="black" />
+                ),
+              }} />
 
-          <Tab.Screen
-            name="Weather"
-            //passing the props
-            children={() => <Weather weather={weather} weatherLogo={weatherLogo} />}
-            options={{
-              tabBarLabel: 'Weather',
-              tabBarIcon: () => (
-                //inserting icon
-                <MaterialCommunityIcons name="weather-partly-cloudy" size={24} color="black" />
-              ),
-            }} />
+            <Tab.Screen
+              name="Weather"
+              //passing the props
+              children={() => <Weather weather={weather} weatherLogo={weatherLogo} />}
+              options={{
+                tabBarLabel: 'Weather',
+                tabBarIcon: () => (
+                  //inserting icon
+                  <MaterialCommunityIcons name="weather-partly-cloudy" size={24} color="black" />
+                ),
+              }} />
 
-          <Tab.Screen
-            name="My Places"
-            //passing the props
-            children={() => <Places city={city} country={country} currency={currency} quote={quote} weather={weather} />}
-            options={{
-              tabBarLabel: 'My Places',
-              tabBarIcon: () => (
-                //inserting icon
-                <MaterialIcons name="place" size={24} color="black" />
-              ),
-            }} />
+            <Tab.Screen
+              name="My Places"
+              //passing the props
+              children={() => <Places city={city} country={country} currency={currency} quote={quote} weather={weather} />}
+              options={{
+                tabBarLabel: 'My Places',
+                tabBarIcon: () => (
+                  //inserting icon
+                  <MaterialIcons name="place" size={24} color="black" />
+                ),
+              }} />
 
-        </Tab.Navigator>
-      </NavigationContainer>
+          </Tab.Navigator>
+        </NavigationContainer>
+      </LoadingView>
     </>
 
   );
