@@ -5,6 +5,7 @@ GPS_CURRENCY_APP
 * [General info](#general-info)
 * [Screenshots](#screenshots)
 * [Technologies](#technologies)
+* [API's](#apis)
 * [How to use](#how-to-use)
 * [Status](#status)
 * [Inspiration](#inspiration)
@@ -24,6 +25,10 @@ This is an API developed to collect user's location and give back infomation abo
 * React - version 16.13.1
 * React-native-maps - version 0.27.1
     
+## API's
+* [OpenCage](https://opencagedata.com/)
+* [OpenWeather](https://openweathermap.org/)
+* [CurrencyLayer](https://currencylayer.com/)
 
 ## How to Use
 To clone and run this application, you'll need Expo and React Native  installed on your computer.
@@ -32,8 +37,10 @@ To clone and run this application, you'll need Expo and React Native  installed 
 ## Status
 Project is in progress
 
+
 ## Inspiration
 This project is the result of my Mobile Development subject in college. 
+
 
 ## Contact
 Created by [Bruna Marjorie](https://github.com/BrunaMarjorie) - feel free to contact me!
