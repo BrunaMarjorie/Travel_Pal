@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, Button, Linking } from 'react-native';
-import logoImg from '../assets/logo.jpg';
 //import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 
@@ -25,10 +24,6 @@ const Home = (props) => {
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
-                <Image
-                    source={logoImg}
-                    style={styles.logo}
-                />
                 <Text style={styles.title} >Welcome to GeoLocation App</Text>
                 <Text style={styles.description} >Your current location is:</Text>
                 <Text style={styles.location} >{text}</Text>
@@ -47,7 +42,7 @@ const Home = (props) => {
                     <Marker coordinate={{ latitude: lat, longitude: long }} />
                 </MapView>*/}
                 <Button
-                    title='Open in Map'
+                    title='View in Map'
                     onPress={() => {
                         Linking.openURL(`https://www.google.com/maps/place/${lat},${long}`);
                     }}
@@ -74,7 +69,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F3F4F4',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: "70%",
+        height: "80%",
         width: 500,
     },
     logo: {

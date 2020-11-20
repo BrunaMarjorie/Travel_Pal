@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TextInput, Button } from 'react-native';
-import logoImg from '../assets/logo.jpg';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TextInput, Button } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import { CLkey } from './keys'; //importing api key
 
 
 const Currency = (props) => {
     //importing props
     const iso_code = props.currency.iso_code;
     const name = props.currency.name; //name of the currency
-    const [amount, setAmount] = useState(null); //amount to be converted
     //local means convertion is USD to local currency
     const [local, setLocal] = useState(true);
     const [convertion, setConvertion] = useState(null); //value converted
@@ -20,7 +17,7 @@ const Currency = (props) => {
     if (local) {
         btn = 'Change to ' + iso_code + ' TO USD?';
     } else {
-        btn = 'Change to USD TO ' + iso_code + '?' ;
+        btn = 'Change to USD TO ' + iso_code + '?';
     }
 
     //setting the iso_code to be displayed beside the amount and convertion
@@ -35,30 +32,29 @@ const Currency = (props) => {
     }
 
     //converting the amount passed
-    let convert = async () => {
+    let convert = async (amount) => {
         let conv;
-        if (local) { //converting USD to local
-            conv = parseFloat(quote) * parseFloat(amount);
-            setConvertion(conv.toFixed(2));
-        } else { //converting local to USD
-            conv = (1 / parseFloat(quote)) * parseFloat(amount);
-            setConvertion(conv.toFixed(2));
+        //if amount is deleted, convertion will be set as null again
+        if (amount == 0 || amount == null) {
+            setConvertion(null);
+        } else {
+            if (local) { //converting USD to local
+                conv = parseFloat(quote) * parseFloat(amount);
+                setConvertion(conv.toFixed(2));
+            } else { //converting local to USD
+                conv = (1 / parseFloat(quote)) * parseFloat(amount);
+                setConvertion(conv.toFixed(2));
+            }
         }
     }
 
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
-                <Image
-                    source={logoImg}
-                    style={styles.logo}
-                />
-                <Text>  </Text>
                 <Text style={styles.title} >Currency Conversion</Text>
-                <Text>  </Text>
-                <Text style={styles.description} >The local currency is: {name}</Text>
-                <Text>  </Text>
-                <View style={styles.containerButton}>
+                <Text style={styles.description} >The local currency is:</Text>
+                <Text style={styles.description} >{name}</Text>
+                <View style={styles.containerInput}>
                     <View style={styles.input}>
                         <TextInput style={{
                             height: 40,
@@ -68,8 +64,11 @@ const Currency = (props) => {
                             textAlign: 'center',
                             textAlignVertical: 'bottom',
                         }}
-                            //collecting the amount desired
-                            onChangeText={setAmount}
+                            //collecting the amount desired, and converting
+                            //it automatically
+                            onChangeText={(amount) => {
+                                convert(amount)
+                            }}
                             placeholder='1.00' />
 
                         <TextInput style={{
@@ -108,13 +107,11 @@ const Currency = (props) => {
                             editable={false} />
                     </View>
                 </View>
-                <Text>  </Text>
-                <Button title='GET CONVERTION'
-                    onPress={convert} />
+
                 <Button title={btn}
                     onPress={() => {
-                        setConvertion(null);
-                        if (local) {
+                        setConvertion(null); 
+                        if (local) { //on press the convertion will change
                             setLocal(false)
                         } else { setLocal(true) }
                     }} />
@@ -138,18 +135,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#F3F4F4',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: "70%",
+        height: "80%",
         width: 700,
     },
-    containerButton: {
+    containerInput: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: 300,
-    },
-    logo: {
-        width: 300,
-        height: 79
+        height:150,
     },
     title: {
         fontWeight: "bold",
@@ -157,14 +151,6 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 18
-    },
-    location: {
-        fontWeight: "bold",
-        fontSize: 18,
-    },
-    author: {
-        maxWidth: 250,
-        textAlign: 'center'
     },
     input: {
         justifyContent: 'space-around',

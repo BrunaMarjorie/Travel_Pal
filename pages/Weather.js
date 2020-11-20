@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, Animated } from 'react-native';
-import logoImg from '../assets/logo.jpg';
+import React from 'react';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
 
 const Weather = (props) => {
@@ -12,10 +11,6 @@ const Weather = (props) => {
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
-                <Image
-                    source={logoImg}
-                    style={styles.logo}
-                />
                 <Text style={styles.title} >Weather</Text>
                 <Image
                     source={{uri: weatherLogo}}
@@ -29,13 +24,13 @@ const Weather = (props) => {
                         textAlign: 'center',
                     }}>
                         {'TEMPERATURE \n'}
-                        {parseInt(temp)} </Text>
+                        {parseInt(temp)}{'\u00b0'} </Text>
                     <Text style={{
                         width: 100,
                         textAlign: 'center',
                     }}>
                         {'FEELS LIKE \n'}
-                        {parseInt(feels_like)} </Text>
+                        {parseInt(feels_like)}{'\u00b0'} </Text>
                 </View>
                 <Text>________________________________________________________</Text>
                 <Text></Text>
@@ -70,7 +65,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: "70%",
+        height: "80%",
         width: 500,
     },
     containerOutput: {

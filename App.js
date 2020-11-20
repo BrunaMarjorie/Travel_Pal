@@ -44,11 +44,12 @@ export default function App() {
 
       setLat(location.coords.latitude);
       setLong(location.coords.longitude);
-
+     
       //colleting information about the place with coordinates given
-      openCage(location.coords.latitude, location.coords.longitude);
+      //openCage(location.coords.latitude, location.coords.longitude);
+      openCage('-10.5434', '-37.0429');
       //colleting information about the weather with coordinates given
-      openWeather(location.coords.latitude, location.coords.longitude);
+      openWeather('-10.5434', '-37.0429');
 
     })();
   }, []);
@@ -96,7 +97,6 @@ export default function App() {
         setWeather(json); //collecting the weather information
         let icon = (json.weather[0].icon)
         icon = 'http://openweathermap.org/img/wn/' + icon + '@2x.png'
-        console.log(icon);
         setWeatherLogo(icon);
         console.log(json);
       });
@@ -111,6 +111,7 @@ export default function App() {
         })
         .then((json) => {
           setQuote(json.quotes[Object.keys(json.quotes)[0]]);
+          console.log(json);
         })
     }
   }, [iso_code]);
