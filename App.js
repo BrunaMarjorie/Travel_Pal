@@ -96,8 +96,8 @@ export default function App() {
       })
       .then((json) => {
         setWeather(json); //collecting the weather information
-        let icon = (json.weather[0].icon)
-        icon = 'http://openweathermap.org/img/wn/' + icon + '@2x.png'
+        let icon = (json.weather[0].icon);
+        icon = 'http://openweathermap.org/img/wn/' + icon + '@2x.png' //collecting logo
         setWeatherLogo(icon);
         console.log(json);
       });
