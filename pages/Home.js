@@ -24,7 +24,7 @@ const Home = (props) => {
     return (
         <View style={styles.containerMaster} >
             <View style={styles.container}>
-                <Text style={styles.title} >Welcome to GeoLocation App</Text>
+                <Text style={styles.title} >Welcome to Travel Pal</Text>
                 <Text style={styles.description} >Your current location is:</Text>
                 <Text style={styles.location} >{text}</Text>
                 <MapView

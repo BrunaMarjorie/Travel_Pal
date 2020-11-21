@@ -1,5 +1,5 @@
 # Project Name
-GPS_CURRENCY_APP 
+TRAVEL_PAL 
 
 ## Table of Contents
 * [General info](#general-info)
@@ -15,7 +15,7 @@ GPS_CURRENCY_APP
 This is an API developed to collect user's location and give back infomation about local currency and convertions, and also information about weather.
 
 ## Screenshots
-![alt text](/assets/home.jpg)
+![alt text](/assets/home-screen.jpg)
 ![alt text](/assets/currency-screen.jpg)
 ![alt text](/assets/weather-screen.jpg)
 

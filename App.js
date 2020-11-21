@@ -49,7 +49,6 @@ export default function App() {
 
       //colleting information about the place with coordinates given
       openCage(location.coords.latitude, location.coords.longitude);
-      //openCage('-10.5434', '-37.0429');
       //colleting information about the weather with coordinates given
       openWeather(location.coords.latitude, location.coords.longitude);
 
@@ -58,7 +57,7 @@ export default function App() {
 
   //fetching data from api openCage
   let openCage = (lat, long) => {
-    setLoading(false);
+    setLoading(false); //sending message to start the app
     //passing key and coordinates
     fetch('https://api.opencagedata.com/geocode/v1/json?key=' + OCkey +
       '&language=en&pretty=1&q=' + lat + '+' + long)
@@ -104,15 +103,16 @@ export default function App() {
       });
   }
 
+  //fetching the api currencyLayer
   useEffect(() => {
-    if (iso_code !== null) {
+    if (iso_code !== null) { //when iso_code changes, the api is called
       fetch('http://apilayer.net/api/live?access_key=' + CLkey +
         '&&currencies=' + iso_code + '&format=1')
         .then((response) => {
           return response.json()
         })
         .then((json) => {
-          setQuote(json.quotes[Object.keys(json.quotes)[0]]);
+          setQuote(json.quotes[Object.keys(json.quotes)[0]]); //collecting rate
           console.log(json);
         })
     }
@@ -121,6 +121,7 @@ export default function App() {
 
   return (
     <>
+      {/* App starts only when ready */}
       <LoadingView loading={loading}>
         <NavigationContainer>
           <Tab.Navigator
