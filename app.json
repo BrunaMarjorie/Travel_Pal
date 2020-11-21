@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "gps_currency_app",
-    "slug": "gps_currency_app",
+    "name": "travel_pal",
+    "slug": "travel_pal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
